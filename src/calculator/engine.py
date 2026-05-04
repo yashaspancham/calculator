@@ -2,19 +2,29 @@ import math
 import re
 
 
-def calculate_expression(expression):
+
+def calculate_expression(expression) -> int | float | str:
         try:
+                # Normalize symbols
                 expression = expression.replace("×", "*")
                 expression = expression.replace("÷", "/")
                 expression = expression.replace("−", "-")
                 expression = expression.strip()
 
+                # Handle percentages
                 expression = _handle_percentage(expression)
 
+                # ✅ Fix leading zeros (e.g., 0005 → 5)
+                expression = re.sub(r'\b0+(\d+)', r'\1', expression)
+
+                # Evaluate expression
                 result = eval(expression)
 
-                if isinstance(result, float) and result.is_integer():
-                        result = int(result)
+                # ✅ Fix floating point precision
+                if isinstance(result, float):
+                        result = round(result, 10)  # control precision
+                        if result.is_integer():
+                                result = int(result)
 
                 return result
 

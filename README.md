@@ -61,7 +61,7 @@ python3 -m venv v_env
 source v_env/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### Run the application
@@ -75,9 +75,6 @@ python3 -m src.calculator.ui
 ## Running Tests
 
 ```bash
-# Install dev dependencies
-pip install -r requirements-dev.txt
-
 # Run all tests with coverage
 pytest --cov=src --cov-report=html:reports/coverage --html=reports/report.html --junitxml=reports/results.xml
 ```
