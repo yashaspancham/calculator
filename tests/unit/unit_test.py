@@ -33,7 +33,6 @@ def get_test_cases(source_file: str) -> list:
                 data_frame = pandas.read_csv(source_file)
         else:
                 data_frame = pandas.read_excel(source_file, engine=excel_engines[source_file.split(".")[-1]])
-        print(data_frame)
         return list(data_frame.itertuples(index=False, name=None))
 
 
@@ -42,12 +41,13 @@ def get_test_cases(source_file: str) -> list:
 @pytest.mark.test_calculate_expression
 @pytest.mark.parametrize('function, function_input, expected_output', get_test_cases("./tests/unit/unit_test_cases.csv"))
 def test_calculate_expression(function, function_input: str, expected_output: int|float|str) -> None:
-        logger.info(f"function: {function}")
-        logger.info(f"function_input: {function_input}")
         actual_value = FUNCTION_MAP[function](function_input)
-        logger.info(f"actual: {actual_value}")
-        logger.info(f"expected: {expected_output}")
+        logger.info(
+                "input=%s actual=%s expected=%s",
+                function_input,
+                actual_value,
+                expected_output,
+        )
         assert str(actual_value) == str(expected_output)
-
 
 

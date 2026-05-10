@@ -1,6 +1,7 @@
 import os
 import csv
 import json
+import logging
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
@@ -9,6 +10,8 @@ from PyQt5.QtCore import Qt
 
 from src.calculator.ui import Calculator
 
+
+logger = logging.getLogger(__name__)
 
 TEST_CASES_FILE = os.path.join(
         os.path.dirname(__file__),
@@ -47,5 +50,12 @@ def get_test_cases(source_file: str) -> list:
 )
 def test_ui(qtbot, calculator, sequence, expected):
         click_buttons(qtbot, calculator, sequence)
+        actual_value = calculator.display.text()
+        logger.info(
+                "sequence=%s actual=%s expected=%s",
+                sequence,
+                actual_value,
+                expected,
+        )
 
-        assert calculator.display.text() == expected
+        assert actual_value == expected
