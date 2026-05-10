@@ -1,4 +1,4 @@
-# PyQt6 Calculator — Project Plan
+# PyQt5 Calculator — Project Plan
 
 ## Project Structure
 
@@ -6,7 +6,7 @@
 calculator/
 ├── src/calculator/
 │   ├── engine.py        # Pure logic, no Qt
-│   ├── ui.py            # PyQt6 MainWindow
+│   ├── ui.py            # PyQt5 MainWindow
 │   └── logger.py        # Logging setup
 ├── tests/
 │   ├── unit/            # test_engine.py

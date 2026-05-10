@@ -1,7 +1,6 @@
 import pytest
 import logging
 import pandas
-from src.calculator.engine import calculate_expression, square_root
 from src.calculator.engine import (
         calculate_expression,
         square_root,
@@ -34,7 +33,6 @@ def get_test_cases(source_file: str) -> list:
                 data_frame = pandas.read_csv(source_file)
         else:
                 data_frame = pandas.read_excel(source_file, engine=excel_engines[source_file.split(".")[-1]])
-        # data_frame = data_frame.iloc[:, 1:]
         print(data_frame)
         return list(data_frame.itertuples(index=False, name=None))
 
