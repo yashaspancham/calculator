@@ -1,8 +1,11 @@
 allure-pytest==2.16.0
 allure-python-commons==2.16.0
 attrs==26.1.0
+coverage==7.13.5
 defusedxml==0.7.1
 iniconfig==2.3.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
 numpy==2.4.4
 odfpy==1.4.1
 packaging==26.2
@@ -15,6 +18,9 @@ PyQt5_sip==12.18.0
 PyQt6-Qt6==6.11.0
 PyQt6_sip==13.11.1
 pytest==9.0.3
+pytest-cov==7.1.0
+pytest-html==4.2.0
+pytest-metadata==3.1.1
 pytest-qt==4.5.0
 python-dateutil==2.9.0.post0
 six==1.17.0

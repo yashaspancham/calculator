@@ -120,7 +120,7 @@ Logging is scoped to the test pipeline only — the application itself does not 
 |------|----------------------------------------------------------------------------------|
 | T-05 | UI tests shall use `pytest-qt`                                                   |
 | T-06 | Tests shall simulate button clicks and verify display output                     |
-| T-07 | Tests shall verify that keyboard input (if supported) triggers the correct action|
+| T-07 | Keyboard input tests are deferred until keyboard support is implemented          |
 
 ### 5.4 Coverage & Reporting
 
@@ -178,5 +178,6 @@ calculator/
 
 - Scientific/trigonometric functions (sin, cos, tan, log)
 - Expression history or memory registers
+- Keyboard input support and keyboard-driven UI tests
 - Multi-window or multi-instance support
 - Mobile or web deployment

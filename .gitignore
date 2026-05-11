@@ -49,6 +49,8 @@ override.tf.json
 *_override.tf.json
 crash.log
 crash.*.log
+*.tfplan
+tfplan
 
 # IDE
 .vscode/
