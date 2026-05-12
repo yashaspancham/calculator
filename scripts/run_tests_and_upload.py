@@ -1,6 +1,7 @@
 from datetime import datetime
 import subprocess
 import sys
+from scripts.utils import upload_file_to_s3
 
 timestamp: str = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -16,12 +17,24 @@ cmd = [
 ]
 
 with open(log_file, "w") as log:
-                proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        text=True)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in proc.stdout:
                 print(line, end="")
                 log.write(line)
         proc.wait()
+
+
+
+
+
+
+
+upload_file_to_s3(log_file)
+
+upload_file_to_s3(f"./reports/test-report/{timestamp}.html")
+
+
+
 
 # store exit code from proc.returncode
 
@@ -34,4 +47,3 @@ with open(log_file, "w") as log:
 #     upload allure results directory (walk and upload each file)
 
 # exit with pytest's exit code
-

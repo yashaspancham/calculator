@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "calculator_logs_and_reports" {
-  bucket = "calculator-logs-and-reports-45367134"
+  bucket        = "calculator-logs-and-reports-45367134"
+  force_destroy = true #This is not best practice
 
   tags = {
     Name        = "Calculator Logs and Reports"
