@@ -1,7 +1,7 @@
 from datetime import datetime
 import subprocess
 import sys
-from scripts.utils import upload_file_to_s3
+from scripts.utils import upload_file_to_s3, upload_folder_to_s3
 
 timestamp: str = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -29,21 +29,20 @@ with open(log_file, "w") as log:
 
 
 
-upload_file_to_s3(log_file)
+upload_file_to_s3(log_file, log_file)
 
-upload_file_to_s3(f"./reports/test-report/{timestamp}.html")
+upload_file_to_s3(f"./reports/test-report/{timestamp}.html", f"reports/test-report/{timestamp}.html")
 
+bucket_name="calculator-logs-and-reports-45367134"
 
+upload_folder_to_s3(
+        f"./reports/coverage/{timestamp}",
+        bucket_name,
+        f"reports/coverage/{timestamp}"
+)
 
-
-# store exit code from proc.returncode
-
-# if exit code is 0 or 1:
-#     create s3 client
-#
-#     upload log file
-#     upload test report html
-#     upload coverage directory (walk and upload each file)
-#     upload allure results directory (walk and upload each file)
-
-# exit with pytest's exit code
+upload_folder_to_s3(
+        f"./reports/allure/allure-{timestamp}-results",
+        bucket_name,
+        f"reports/allure/allure-{timestamp}-results"
+)

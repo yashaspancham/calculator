@@ -15,6 +15,7 @@ develop-eggs/
 .installed.cfg
 lib/
 lib64/
+__init__.py
 
 # Virtual environment
 v_env/
