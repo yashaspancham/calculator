@@ -1,14 +1,15 @@
 from datetime import datetime
 import subprocess
 import sys
+import shutil
 from scripts.utils import upload_file_to_s3, upload_folder_to_s3
 
 timestamp: str = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-mkdir_cmd = "mkdir -p logs reports/test-report reports/coverage reports/allure/allure-$timestamp-results reports/allure-$timestamp-report".split(" ")
+mkdir_cmd = "mkdir -p logs/test_logs reports/test-report reports/coverage reports/allure/".split(" ")
 subprocess.run(mkdir_cmd)
 
-log_file = f"logs/{timestamp}.log"
+log_file = f"logs/test_logs/{timestamp}.log"
 cmd = [
         sys.executable, "-m", "pytest",
                 f"--html=reports/test-report/{timestamp}.html", "--self-contained-html",
@@ -24,25 +25,28 @@ with open(log_file, "w") as log:
         proc.wait()
 
 
-
-
-
-
-
 upload_file_to_s3(log_file, log_file)
 
 upload_file_to_s3(f"./reports/test-report/{timestamp}.html", f"reports/test-report/{timestamp}.html")
 
-bucket_name="calculator-logs-and-reports-45367134"
 
-upload_folder_to_s3(
+
+shutil.make_archive(
         f"./reports/coverage/{timestamp}",
-        bucket_name,
-        f"reports/coverage/{timestamp}"
+        "zip",
+        f"./reports/coverage/{timestamp}"
+        )
+upload_file_to_s3(
+        f"./reports/coverage/{timestamp}.zip",
+        f"reports/coverage/{timestamp}.zip"
 )
 
-upload_folder_to_s3(
+shutil.make_archive(
         f"./reports/allure/allure-{timestamp}-results",
-        bucket_name,
+        "zip",
         f"reports/allure/allure-{timestamp}-results"
+)
+upload_file_to_s3(
+        f"./reports/allure/allure-{timestamp}-results.zip",
+        f"reports/allure/allure-{timestamp}-results.zip"
 )
