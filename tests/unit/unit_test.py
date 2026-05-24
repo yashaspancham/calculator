@@ -1,6 +1,7 @@
 import pytest
 import logging
 import pandas
+from typing import Union
 from src.calculator.engine import (
         calculate_expression,
         square_root,
@@ -40,7 +41,7 @@ def get_test_cases(source_file: str) -> list:
 
 @pytest.mark.test_calculate_expression
 @pytest.mark.parametrize('function, function_input, expected_output', get_test_cases("./tests/unit/unit_test_cases.csv"))
-def test_calculate_expression(function, function_input: str, expected_output: int|float|str) -> None:
+def test_calculate_expression(function, function_input: str, expected_output: Union[int, float, str]) -> None:
         actual_value = FUNCTION_MAP[function](function_input)
         logger.info(
                 "input=%s actual=%s expected=%s",
