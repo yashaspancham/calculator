@@ -55,3 +55,4 @@ upload_file_to_s3(
         f"./reports/allure/allure-{timestamp}-results.zip",
         f"reports/allure/allure-{timestamp}-results.zip"
 )
+
