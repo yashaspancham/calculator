@@ -1,9 +1,10 @@
 import math
 import re
+from typing import Union
 
 
 
-def calculate_expression(expression) -> int | float | str:
+def calculate_expression(expression) -> Union[int, float, str]:
         try:
                 # Normalize symbols
                 expression = expression.replace("×", "*")
