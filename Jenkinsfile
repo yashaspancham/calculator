@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         VENV = "v_env"
+        QT_QPA_PLATFORM = "offscreen"
     }
 
     triggers {
