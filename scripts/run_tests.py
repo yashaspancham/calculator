@@ -2,7 +2,7 @@ from datetime import datetime
 import subprocess
 import sys
 import shutil
-from scripts.utils import upload_file_to_s3, upload_folder_to_s3
+from scripts.utils import upload_file_to_s3
 
 timestamp: str = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -15,6 +15,7 @@ cmd = [
                 f"--html=reports/test-report/{timestamp}.html", "--self-contained-html",
                 "--cov=src/calculator", f"--cov-report=html:reports/coverage/{timestamp}",
                 f"--alluredir=reports/allure/allure-{timestamp}-results",
+                f"--junitxml=reports/test-report/{timestamp}.xml"
 ]
 
 with open(log_file, "w") as log:
@@ -29,6 +30,10 @@ upload_file_to_s3(log_file, log_file)
 
 upload_file_to_s3(f"./reports/test-report/{timestamp}.html", f"reports/test-report/{timestamp}.html")
 
+upload_file_to_s3(
+        f"./reports/test-report/{timestamp}.xml",
+        f"reports/test-report/{timestamp}.xml", 
+        )
 
 
 shutil.make_archive(

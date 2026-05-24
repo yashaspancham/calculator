@@ -5,6 +5,10 @@ pipeline {
         VENV = "v_env"
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -60,6 +64,9 @@ pipeline {
     }
 
     post {
+        always {
+            junit 'reports/*.xml'
+        }
         failure {
             echo 'Pipeline failed'
         }

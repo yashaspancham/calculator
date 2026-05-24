@@ -1,7 +1,7 @@
 import subprocess 
 import shutil
 from datetime import datetime
-from scripts.utils import upload_file_to_s3, upload_folder_to_s3
+from scripts.utils import upload_file_to_s3
 
 
 print("Creating build....")

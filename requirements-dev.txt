@@ -1,10 +1,14 @@
 allure-pytest==2.16.0
 allure-python-commons==2.16.0
+altgraph==0.17.5
 attrs==26.1.0
+boto3==1.43.6
+botocore==1.43.6
 coverage==7.13.5
 defusedxml==0.7.1
 iniconfig==2.3.0
 Jinja2==3.1.6
+jmespath==1.1.0
 MarkupSafe==3.0.3
 numpy==2.4.4
 odfpy==1.4.1
@@ -12,6 +16,8 @@ packaging==26.2
 pandas==3.0.2
 pluggy==1.6.0
 Pygments==2.20.0
+pyinstaller==6.20.0
+pyinstaller-hooks-contrib==2026.5
 PyQt5==5.15.11
 PyQt5-Qt5==5.15.18
 PyQt5_sip==12.18.0
@@ -23,5 +29,8 @@ pytest-html==4.2.0
 pytest-metadata==3.1.1
 pytest-qt==4.5.0
 python-dateutil==2.9.0.post0
+s3transfer==0.17.0
+setuptools==82.0.1
 six==1.17.0
 typing_extensions==4.15.0
+urllib3==2.7.0
