@@ -26,6 +26,8 @@ with open(log_file, "w") as log:
         log.write(line)
     proc.wait()
 
+exit_code = proc.returncode
+
 upload_file_to_s3(log_file, log_file)
 
 if os.path.exists(f"./reports/test-report/{timestamp}.html"):
@@ -49,3 +51,5 @@ allure_dir = f"reports/allure/allure-{timestamp}-results"
 if os.path.exists(allure_dir):
     shutil.make_archive(f"./{allure_dir}", "zip", allure_dir)
     upload_file_to_s3(f"./{allure_dir}.zip", f"{allure_dir}.zip")
+
+sys.exit(exit_code)
