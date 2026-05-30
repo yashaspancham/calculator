@@ -39,16 +39,16 @@ resource "aws_s3_bucket_versioning" "calculator_logs_and_reports" {
 }
 
 
-# resource "tls_private_key" "jenkins_key" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
+resource "tls_private_key" "jenkins_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
 
-# resource "aws_key_pair" "jenkins_key" {
-#   key_name   = "jenkins-key"
-#   public_key = tls_private_key.jenkins_key.public_key_openssh
-# }
+resource "aws_key_pair" "jenkins_key" {
+  key_name   = "jenkins-key"
+  public_key = tls_private_key.jenkins_key.public_key_openssh
+}
 
 
 resource "aws_iam_role" "jenkins_role" {
@@ -93,46 +93,46 @@ resource "aws_iam_instance_profile" "jenkins_profile" {
 }
 
 
-# resource "aws_instance" "jenkins_server" {
-#   ami                    = "" # install: Java, Jenkins, Git, Python3, pip
-#   instance_type          = "t2.micro"
-#   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
+resource "aws_instance" "jenkins_server" {
+  ami                    = "ami-068d7215bfd3542f7" # install: Java, Jenkins, Git, Python3, pip
+  instance_type          = "t2.large"
+  vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
-#   iam_instance_profile   = aws_iam_instance_profile.jenkins_profile.name
-#   tags = {
-#     Name        = "Jenkins server"
-#     Description = "Jenkins server for CI pipeline tests and builds Calculator"
-#     ManagedBy   = "terraform"
-#     Project     = "Calculator"
-#   }
-# }
+  iam_instance_profile   = aws_iam_instance_profile.jenkins_profile.name
+  tags = {
+    Name        = "Jenkins server"
+    Description = "Jenkins server for CI pipeline tests and builds Calculator"
+    ManagedBy   = "terraform"
+    Project     = "Calculator"
+  }
+}
 
 
-# resource "aws_security_group" "jenkins_sg" {
-#   name        = "jenkins-sg"
-#   description = "Security group for jenkins server"
+resource "aws_security_group" "jenkins_sg" {
+  name        = "jenkins-sg"
+  description = "Security group for jenkins server"
 
-#   ingress {
-#     description = "jenkins UI"
-#     from_port   = 8080
-#     to_port     = 8080
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    description = "jenkins UI"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   ingress {
-#     description = "ssh"
-#     from_port   = 22
-#     to_port     = 22
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    description = "ssh"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   egress {
-#     description = "all outbound"
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-# }
+  egress {
+    description = "all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

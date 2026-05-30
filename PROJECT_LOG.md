@@ -50,6 +50,12 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 - GitHub branch protection ruleset requiring `continuous-integration/jenkins/branch` to pass before merge
 - Updated GitHub PAT with `repo:status` scope in Jenkins credentials
 
+### Session 4 — No-IP boot persistence, AMI prep
+- Created `/etc/systemd/system/noip2.service` unit file for No-IP dynamic DNS client
+- Killed orphaned `noip2` process (was running as `nobody`, not managed by systemd)
+- Enabled and started service via systemd — `active (running)`, survives reboots
+- EC2 instance is now AMI-ready: Jenkins `enabled`, No-IP `enabled`
+
 ### Session 3 — Bug fixes, pipeline hardening, IAM prep
 - Fixed 2 failing integration tests: `√` of negated number returning wrong result, backspace on "Welcome" display stripping characters
 - Fixed Jenkins branch discovery strategy ("All branches") so webhooks trigger builds when a PR is open
@@ -75,7 +81,8 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 | Workspace auto-cleanup | Done — `cleanWs()` + `buildDiscarder(10)` |
 | IAM role Terraform resources | Done — uncommented, ready to apply |
 | S3 artifact uploads | Blocked — IAM role not yet attached to EC2 |
-| JUnit trend graph in Jenkins | Broken — path mismatch (see Known Issues) |
+| JUnit trend graph in Jenkins | Fixed — path corrected to `reports/test-report/*.xml` |
+| No-IP systemd service | Done — `enabled`, `active (running)` |
 | EC2 AMI snapshot | Not started |
 | Terraform AMI ID | Not started — placeholder in `terraform/main.tf` |
 
@@ -83,14 +90,14 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 
 ## Pending Work
 
-1. **Attach IAM role to EC2** — `jenkins-ec2-profile` via AWS Console → EC2 → Actions → Security → Modify IAM role — needed for S3 uploads
-2. **Fix JUnit path in Jenkinsfile** — Jenkinsfile looks for `reports/*.xml` but XML is written to `reports/test-report/*.xml`; change to `testResults: 'reports/test-report/*.xml'`
-3. **Create EC2 AMI** — snapshot the instance after IAM role is attached and everything is working
-4. **Fill in AMI ID** — update `ami = ""` placeholder in `terraform/main.tf`
+1. **Create EC2 AMI** — AWS Console → EC2 → select Jenkins instance → Actions → Image and templates → Create image (name: `jenkins-calculator-v1`)
+2. **`terraform apply`** — creates IAM role, policy, attachment, instance profile
+3. **Attach IAM role to EC2** — `jenkins-ec2-profile` via AWS Console → EC2 → Actions → Security → Modify IAM role — needed for S3 uploads
+4. **Verify S3 uploads** — run a build on main after IAM role is attached
+5. **Fill in AMI ID** — update `ami = ""` placeholder in `terraform/main.tf`
 
 ---
 
 ## Known Issues
 
-- EC2 lacks an IAM instance profile → S3 uploads fail with "Unable to locate credentials"
-- JUnit XML path mismatch: written to `reports/test-report/` but Jenkinsfile looks in `reports/` — test trend graph won't populate (non-blocking due to `allowEmptyResults: true`)
+- EC2 lacks an IAM instance profile → S3 uploads fail with "Unable to locate credentials" (fix: `terraform apply` then attach `jenkins-ec2-profile` via console)
