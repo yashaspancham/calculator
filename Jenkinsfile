@@ -10,6 +10,10 @@ pipeline {
         githubPush()
     }
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -61,6 +65,7 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, testResults: 'reports/*.xml'
+            cleanWs()
         }
         failure {
             echo 'Pipeline failed'
