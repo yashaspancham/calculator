@@ -23,10 +23,12 @@ A running record of what's been built, what's broken, and what's next.
 Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 ```
 
-- **Test** runs only on PRs or `main` branch
+- **Test** runs on every branch — ensures branch protection gets accurate signal
 - **Build** runs only on `main` branch
 - JUnit XML published on every run (`post { always }`)
 - `sys.exit` in `run_tests.py` ensures test failures block the Build stage
+- Last 10 builds kept, older ones auto-discarded (`buildDiscarder`)
+- Workspace wiped after every build (`cleanWs()`) to prevent disk fill
 
 ---
 
@@ -48,6 +50,15 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 - GitHub branch protection ruleset requiring `continuous-integration/jenkins/branch` to pass before merge
 - Updated GitHub PAT with `repo:status` scope in Jenkins credentials
 
+### Session 3 — Bug fixes, pipeline hardening, IAM prep
+- Fixed 2 failing integration tests: `√` of negated number returning wrong result, backspace on "Welcome" display stripping characters
+- Fixed Jenkins branch discovery strategy ("All branches") so webhooks trigger builds when a PR is open
+- Moved Test stage to run on all branches (not just PRs/main) so branch protection accurately reflects test results
+- Verified branch protection blocks merge on failing tests end-to-end
+- Added `buildDiscarder` (keep last 10 builds) and `cleanWs()` to Jenkinsfile to manage EC2 disk space
+- Uncommented IAM resources in `terraform/main.tf`: role, policy (`s3:PutObject`), attachment, instance profile — ready to `terraform apply`
+- Added `PROJECT_LOG.md` for session tracking
+
 ---
 
 ## Current Status
@@ -57,11 +68,13 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 | Jenkinsfile | Done |
 | GitHub webhook via No-IP | Done |
 | Branch protection ruleset | Done |
-| Test failure blocks build | Done |
+| Test failure blocks merge | Done — verified end-to-end |
 | All tests passing | Done — 228 passed on main |
 | PyInstaller build | Done — produces `dist/calculator` on main |
-| Jenkins branch discovery | Fixed — changed strategy to "All branches" |
-| S3 artifact uploads | Blocked — EC2 has no IAM role attached |
+| Jenkins branch discovery | Fixed — "All branches" strategy |
+| Workspace auto-cleanup | Done — `cleanWs()` + `buildDiscarder(10)` |
+| IAM role Terraform resources | Done — uncommented, ready to apply |
+| S3 artifact uploads | Blocked — IAM role not yet attached to EC2 |
 | JUnit trend graph in Jenkins | Broken — path mismatch (see Known Issues) |
 | EC2 AMI snapshot | Not started |
 | Terraform AMI ID | Not started — placeholder in `terraform/main.tf` |
