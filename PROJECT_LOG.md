@@ -58,8 +58,11 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 | GitHub webhook via No-IP | Done |
 | Branch protection ruleset | Done |
 | Test failure blocks build | Done |
+| All tests passing | Done — 228 passed on main |
+| PyInstaller build | Done — produces `dist/calculator` on main |
+| Jenkins branch discovery | Fixed — changed strategy to "All branches" |
 | S3 artifact uploads | Blocked — EC2 has no IAM role attached |
-| All tests passing | Blocked — 4 test cases failing |
+| JUnit trend graph in Jenkins | Broken — path mismatch (see Known Issues) |
 | EC2 AMI snapshot | Not started |
 | Terraform AMI ID | Not started — placeholder in `terraform/main.tf` |
 
@@ -67,15 +70,14 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 
 ## Pending Work
 
-1. **Fix 4 failing test cases** — failing locally and in CI; identify and fix them so pipeline goes green
-2. **Attach IAM role to EC2** — `jenkins-ec2-profile` via AWS Console → EC2 → Actions → Security → Modify IAM role — needed for S3 uploads
-3. **Verify pipeline passes** — check Jenkins build for latest `Yashas_test` PR (commit `2e59315`)
-4. **Create EC2 AMI** — snapshot the instance after IAM role is attached and pipeline is green
-5. **Fill in AMI ID** — update `ami = ""` placeholder in `terraform/main.tf`
+1. **Attach IAM role to EC2** — `jenkins-ec2-profile` via AWS Console → EC2 → Actions → Security → Modify IAM role — needed for S3 uploads
+2. **Fix JUnit path in Jenkinsfile** — Jenkinsfile looks for `reports/*.xml` but XML is written to `reports/test-report/*.xml`; change to `testResults: 'reports/test-report/*.xml'`
+3. **Create EC2 AMI** — snapshot the instance after IAM role is attached and everything is working
+4. **Fill in AMI ID** — update `ami = ""` placeholder in `terraform/main.tf`
 
 ---
 
 ## Known Issues
 
 - EC2 lacks an IAM instance profile → S3 uploads fail with "Unable to locate credentials"
-- 4 unit test cases fail (reproduce locally with `pytest tests/unit/`)
+- JUnit XML path mismatch: written to `reports/test-report/` but Jenkinsfile looks in `reports/` — test trend graph won't populate (non-blocking due to `allowEmptyResults: true`)
