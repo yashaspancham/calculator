@@ -79,7 +79,7 @@ A desktop calculator application built with Python and PyQt5. The application pr
 
 | ID   | Requirement                                                              |
 |------|--------------------------------------------------------------------------|
-| N-06 | The UI shall follow the dark theme defined in `theme.py`                 |
+| N-06 | The UI shall follow the macOS-inspired theme defined in `theme.py`       |
 | N-07 | Button labels shall be legible at the default window size                |
 
 ---

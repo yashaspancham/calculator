@@ -36,7 +36,7 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 
 ### Session 1 — App build
 - Built `engine.py` (pure math, no Qt): `calculate_expression`, `square_root`, `square`, `negate`, `_handle_percentage`, `extract_last_number`
-- Built PyQt5 UI: dark theme, full button grid, display widget
+- Built PyQt5 UI: macOS-inspired theme, full button grid, display widget
 - Three-layer test suite: unit / integration / UI (pytest-qt), all driven by CSV test case files
 - Logging to `logs/calculator.log`, coverage HTML + pytest-html reports
 
@@ -80,24 +80,20 @@ Checkout → Install → Lint (flake8) → Test → Build (PyInstaller)
 | Jenkins branch discovery | Fixed — "All branches" strategy |
 | Workspace auto-cleanup | Done — `cleanWs()` + `buildDiscarder(10)` |
 | IAM role Terraform resources | Done — uncommented, ready to apply |
-| S3 artifact uploads | Blocked — IAM role not yet attached to EC2 |
+| S3 artifact uploads | Done — logs, reports, build zips uploading on every run |
 | JUnit trend graph in Jenkins | Fixed — path corrected to `reports/test-report/*.xml` |
 | No-IP systemd service | Done — `enabled`, `active (running)` |
-| EC2 AMI snapshot | Not started |
-| Terraform AMI ID | Not started — placeholder in `terraform/main.tf` |
+| EC2 AMI snapshot | Done — `jenkins-calculator-v1` |
+| Terraform AMI ID | Done — filled in `terraform/main.tf` |
 
 ---
 
 ## Pending Work
 
-1. **Create EC2 AMI** — AWS Console → EC2 → select Jenkins instance → Actions → Image and templates → Create image (name: `jenkins-calculator-v1`)
-2. **`terraform apply`** — creates IAM role, policy, attachment, instance profile
-3. **Attach IAM role to EC2** — `jenkins-ec2-profile` via AWS Console → EC2 → Actions → Security → Modify IAM role — needed for S3 uploads
-4. **Verify S3 uploads** — run a build on main after IAM role is attached
-5. **Fill in AMI ID** — update `ami = ""` placeholder in `terraform/main.tf`
+None — project complete.
 
 ---
 
 ## Known Issues
 
-- EC2 lacks an IAM instance profile → S3 uploads fail with "Unable to locate credentials" (fix: `terraform apply` then attach `jenkins-ec2-profile` via console)
+None.
