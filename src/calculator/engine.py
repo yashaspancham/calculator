@@ -52,6 +52,8 @@ def extract_last_number(expression):
         if match:
                 prefix = match.group(1) or ""
                 number = match.group(2)
+                if prefix == "-":
+                        return "", expression
                 return prefix, number
         return "", expression
 

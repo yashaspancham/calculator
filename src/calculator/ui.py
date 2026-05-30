@@ -53,7 +53,10 @@ class Calculator(QMainWindow):
                         prefix, num = extract_last_number(current)
                         self.set_text(prefix + str(negate(num)))
                 elif value == "⌫":
-                        self.set_text(current[:-1])
+                        if current in ("Welcome", "Error"):
+                                self.set_text("")
+                        else:
+                                self.set_text(current[:-1])
                 elif value == "C":
                         self.set_text('0')
                 elif current in ("0", "Welcome", "Error"):
