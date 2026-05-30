@@ -37,12 +37,6 @@ pipeline {
         }
 
         stage('Test') {
-            when {
-                anyOf {
-                    changeRequest()
-                    branch 'main'
-                }
-            }
             steps {
                 sh '''
                     . ${VENV}/bin/activate
